@@ -12,7 +12,7 @@ public class Employee {
     private Long id;
     private String name;
     private String position;
-    private LocalDate hireDate;
+    private String hireDate;
     private boolean active;
     private List<Long> directReports;
 }
