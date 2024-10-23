@@ -15,6 +15,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/employees")
+@CrossOrigin(origins = {"https://flywire-emplyee-management.surge.sh", "http://localhost:5173", "http://127.0.0.1:5173"})
 public class EmployeeController {
 
     private final EmployeeService employeeService;
