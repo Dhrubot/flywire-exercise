@@ -60,4 +60,13 @@ public class EmployeeController {
         return employeeService.getEmployeesByHiredDateRange(startDate, endDate);
     }
 
+    @PostMapping("/{id}/deactivate")
+    public ResponseEntity<String> deactivateEmployee(@PathVariable Long id) {
+        Employee deactivatedEmployee = employeeService.deactivateEmployee(id);
+        if (deactivatedEmployee != null) {
+            return ResponseEntity.ok("Employee with ID " + id + " has been deactivated.");
+        } else {
+            return ResponseEntity.badRequest().body("Employee not found or already inactive.");
+        }
+    }
 }

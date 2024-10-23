@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flywire.exercise.model.Employee;
 import org.springframework.stereotype.Repository;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -47,5 +48,25 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
     @Override
     public String findNameById(Long id) {
         return findById(id).getName();
+    }
+
+    @Override
+    public void save(Employee employee) throws IOException {
+        List<Employee> employees = findAll();
+
+        boolean employeeExists = false;
+        for (int i = 0; i < employees.size(); i++) {
+            if (employees.get(i).getId().equals(employee.getId())){
+                employees.set(i, employee);
+                employeeExists = true;
+                break;
+            }
+        }
+
+        if (!employeeExists){
+            employees.add(employee);
+        }
+
+        objectMapper.writeValue(new File("src/main/resources/json/data.json"), employees);
     }
 }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -66,5 +67,26 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .filter(employee -> !employee.getParsedHireDate().before(start) && !employee.getParsedHireDate().after(end))
                 .sorted((e1, e2) -> e2.getParsedHireDate().compareTo(e1.getParsedHireDate()))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Employee deactivateEmployee(Long id) {
+        try{
+            Optional<Employee> employeeOptional = Optional.ofNullable(employeeRepository.findById(id));
+
+            if (employeeOptional.isPresent()){
+                Employee employee = employeeOptional.get();
+
+                if (employee.isActive()){
+                    employee.setActive(false);
+                    employeeRepository.save(employee);
+                    return employee;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }

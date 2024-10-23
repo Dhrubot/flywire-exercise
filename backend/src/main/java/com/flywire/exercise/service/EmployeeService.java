@@ -11,4 +11,5 @@ public interface EmployeeService {
     Employee getEmployeeById(Long id);
     List<String> getDirectReportsNames(Long id);
     List<Employee> getEmployeesByHiredDateRange(String startDate, String endDate) throws ParseException;
+    Employee deactivateEmployee(Long id);
 }
