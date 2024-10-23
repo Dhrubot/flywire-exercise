@@ -6,16 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepository employeeRepository;
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 
     @Autowired
     public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
@@ -55,5 +55,16 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
 
         return Collections.emptyList();
+    }
+
+    @Override
+    public List<Employee> getEmployeesByHiredDateRange(String startDate, String endDate) throws ParseException {
+        Date start = dateFormat.parse(startDate);
+        Date end = dateFormat.parse(endDate);
+
+        return employeeRepository.findAll().stream()
+                .filter(employee -> !employee.getParsedHireDate().before(start) && !employee.getParsedHireDate().after(end))
+                .sorted((e1, e2) -> e2.getParsedHireDate().compareTo(e1.getParsedHireDate()))
+                .collect(Collectors.toList());
     }
 }
