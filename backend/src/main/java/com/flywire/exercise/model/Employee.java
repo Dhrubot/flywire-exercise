@@ -2,7 +2,10 @@ package com.flywire.exercise.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -11,9 +14,12 @@ import java.util.List;
 
 @Getter
 @Setter
+@ToString
 public class Employee {
     private Long id;
+    @NotEmpty(message = "Name is required")
     private String name;
+    @NotEmpty(message = "Position is required")
     private String position;
     private String hireDate;
     private boolean active;

@@ -9,5 +9,5 @@ public interface EmployeeRepository {
     List<Employee> findAll();
     Employee findById(Long id);
     String findNameById(Long id);
-    void save(Employee employee) throws IOException;
+    Employee save(Employee employee) throws IOException;
 }

@@ -17,6 +17,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepository employeeRepository;
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+    private static final Set<Long> generatedIds = new HashSet<>();
+    private static final Random random = new Random();
 
     @Autowired
     public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
@@ -88,5 +90,34 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
 
         return null;
+    }
+
+    @Override
+    public Employee createEmployee(Employee employee) throws IOException {
+        if (employee.getName() == null || employee.getName().trim().isEmpty()) {
+            throw new IllegalArgumentException("Employee name is required.");
+        }
+        if (employee.getPosition() == null || employee.getPosition().trim().isEmpty()) {
+            throw new IllegalArgumentException("Employee position is required.");
+        }
+        if (employee.getId() == null || employeeRepository.findById(employee.getId()) == null) {
+            long uniqueId = generateUniqueRandomLong();
+            employee.setId(uniqueId);
+        }
+        if (employee.getDirectReports().isEmpty()) {
+            employee.setDirectReports(Collections.emptyList());
+        }
+        Employee employeeN = employeeRepository.save(employee);
+        System.out.println(employeeN);
+        return employeeRepository.save(employee);
+    }
+
+    private long generateUniqueRandomLong() {
+        long newLong;
+        do {
+            newLong = Math.abs(random.nextLong());
+        } while (generatedIds.contains(newLong));
+        generatedIds.add(newLong);
+        return newLong;
     }
 }

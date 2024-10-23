@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
@@ -33,6 +34,36 @@ public class EmployeeController {
         return employeeService.getActiveEmployeesSortedByLastName();
     }
 
+    @GetMapping("/sorted-by-hireDate")
+    public List<Employee> getEmployeesByHireDateRange(@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate) throws ParseException {
+        return employeeService.getEmployeesByHiredDateRange(startDate, endDate);
+    }
+
+    @PostMapping("/{id}/deactivate")
+    public ResponseEntity<String> deactivateEmployee(@PathVariable Long id) {
+        Employee deactivatedEmployee = employeeService.deactivateEmployee(id);
+        if (deactivatedEmployee != null) {
+            return ResponseEntity.ok("Employee with ID " + id + " has been deactivated.");
+        } else {
+            return ResponseEntity.badRequest().body("Employee not found or already inactive.");
+        }
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<Object> createEmployee(@RequestBody Employee employee) {
+        try {
+            Employee newEmployee = employeeService.createEmployee(employee);
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(newEmployee);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error creating employee: " + e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error creating employee: " + e.getMessage());
+        }
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Object> getEmployeeDetailsWithDirectReportsById(@PathVariable Long id) {
         Employee employee = employeeService.getEmployeeById(id);
@@ -55,18 +86,4 @@ public class EmployeeController {
         return new ResponseEntity<>(responseBody, HttpStatus.OK);
     }
 
-    @GetMapping("/sorted-by-hireDate")
-    public List<Employee> getEmployeesByHireDateRange(@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate) throws ParseException {
-        return employeeService.getEmployeesByHiredDateRange(startDate, endDate);
-    }
-
-    @PostMapping("/{id}/deactivate")
-    public ResponseEntity<String> deactivateEmployee(@PathVariable Long id) {
-        Employee deactivatedEmployee = employeeService.deactivateEmployee(id);
-        if (deactivatedEmployee != null) {
-            return ResponseEntity.ok("Employee with ID " + id + " has been deactivated.");
-        } else {
-            return ResponseEntity.badRequest().body("Employee not found or already inactive.");
-        }
-    }
 }

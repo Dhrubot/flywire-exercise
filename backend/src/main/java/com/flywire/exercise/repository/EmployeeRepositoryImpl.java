@@ -30,7 +30,7 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
                 throw new FileNotFoundException("File not found in resources: " + employeeDataFilepath);
             }
             Employee[] employees = objectMapper.readValue(inputStream, Employee[].class);
-            return Arrays.asList(employees);
+            return new ArrayList<>(Arrays.asList(employees));
         } catch (IOException e) {
             e.printStackTrace();
             return new ArrayList<>();
@@ -51,7 +51,7 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
     }
 
     @Override
-    public void save(Employee employee) throws IOException {
+    public Employee save(Employee employee) throws IOException {
         List<Employee> employees = findAll();
 
         boolean employeeExists = false;
@@ -67,6 +67,9 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
             employees.add(employee);
         }
 
+        System.out.println(employees.size());
+
         objectMapper.writeValue(new File("src/main/resources/json/data.json"), employees);
+        return employee;
     }
 }
