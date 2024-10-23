@@ -1,18 +1,14 @@
 package com.flywire.exercise.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flywire.exercise.model.Employee;
 import com.flywire.exercise.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
+
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -27,5 +23,16 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public List<Employee> getAllEmployees() {
         return employeeRepository.findAll();
+    }
+
+    @Override
+    public List<Employee> getActiveEmployeesSortedByLastName() {
+        return employeeRepository.findAll().stream()
+                .filter(Employee::isActive)
+                .sorted(Comparator.comparing(employee -> {
+                    String[] nameParts = employee.getName().split(" ");
+                    return nameParts[nameParts.length - 1];
+                }))
+                .collect(Collectors.toList());
     }
 }
