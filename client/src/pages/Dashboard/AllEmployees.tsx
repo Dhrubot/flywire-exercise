@@ -13,13 +13,13 @@ const AllEmployees = () => {
   const { data: allActiveEmployeesData = [], isPending } = useQuery({
     queryKey: ["allActiveEmployees"],
     queryFn: async () => {
-      const res = await axiosPublic.get("/active");
+      const res = await axiosPublic.get("/");
       return res.data;
     },
   });
 
   const employeeIdToNameMap = Object.fromEntries(
-    allActiveEmployeesData.map((employee: TEmployeeTypes) => [
+    allActiveEmployeesData?.map((employee: TEmployeeTypes) => [
       employee.id,
       employee.name,
     ])
@@ -73,6 +73,7 @@ const AllEmployees = () => {
               <th>Position</th>
               <th>Hire-Date</th>
               <th>Reporting to</th>
+              <th>Status</th>
               <th>Delete Employee</th>
             </tr>
           </thead>
@@ -107,6 +108,7 @@ const AllEmployees = () => {
                       ))
                     )}
                   </td>
+                  <td>{employee.active? "active" : "inactive"}</td>
                   <td>
                     <button onClick={() => handleDelete(employee.id)}>
                       <FaTrashAlt
