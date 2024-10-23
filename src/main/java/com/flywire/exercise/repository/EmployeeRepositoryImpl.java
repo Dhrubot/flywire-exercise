@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 @Repository
 public class EmployeeRepositoryImpl implements EmployeeRepository {
@@ -33,5 +34,18 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
             e.printStackTrace();
             return new ArrayList<>();
         }
+    }
+
+    @Override
+    public Employee findById(Long id) {
+        return findAll().stream()
+                .filter(employee -> Objects.equals(employee.getId(), id))
+                .findFirst()
+                .orElse(null);
+    }
+
+    @Override
+    public String findNameById(Long id) {
+        return findById(id).getName();
     }
 }

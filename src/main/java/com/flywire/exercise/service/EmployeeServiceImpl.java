@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,5 +36,24 @@ public class EmployeeServiceImpl implements EmployeeService {
                     return nameParts[nameParts.length - 1];
                 }))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Employee getEmployeeById(Long id) {
+        return employeeRepository.findById(id);
+    }
+
+    @Override
+    public List<String> getDirectReportsNames(Long id) {
+        Employee employee = employeeRepository.findById(id);
+        if (employee != null && employee.getDirectReports() != null) {
+            return employee.getDirectReports().stream()
+                    .map(this::getEmployeeById)
+                    .filter(Objects::nonNull)
+                    .map(Employee::getName)
+                    .collect(Collectors.toList());
+        }
+
+        return Collections.emptyList();
     }
 }

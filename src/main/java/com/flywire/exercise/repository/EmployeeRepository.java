@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface EmployeeRepository {
     List<Employee> findAll();
+    Employee findById(Long id);
+    String findNameById(Long id);
 }
