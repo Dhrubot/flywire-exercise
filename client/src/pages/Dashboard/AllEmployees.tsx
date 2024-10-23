@@ -72,7 +72,7 @@ const AllEmployees = () => {
               <th>Id No.</th>
               <th>Position</th>
               <th>Hire-Date</th>
-              <th>Reporting to</th>
+              <th>Direct Reports</th>
               <th>Status</th>
               <th>Delete Employee</th>
             </tr>
