@@ -1,5 +1,7 @@
 # React + TypeScript + Vite
 
+Please run the backend server first. This app assumes the backend server is running on localhost:8080
+
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:
