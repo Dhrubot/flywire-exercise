@@ -4,6 +4,5 @@ export type TEmployeeTypes = {
     position: string;
     hireDate: string;
     active: boolean;
-    parsedHireDate: string;
     directReports: string[];
   };

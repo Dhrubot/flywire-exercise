@@ -1,5 +1,6 @@
 package com.flywire.exercise.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -25,6 +26,7 @@ public class Employee {
     private boolean active;
     private List<Long> directReports;
 
+    @JsonIgnore
     public Date getParsedHireDate() {
         try {
             SimpleDateFormat dateFormatter = new SimpleDateFormat("MM/dd/yyyy");
