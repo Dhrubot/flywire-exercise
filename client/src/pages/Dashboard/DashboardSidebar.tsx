@@ -14,12 +14,6 @@ const DashboardSidebar = () => {
               <p className="text-lg leading-10">All Employees</p>
             </Link>
           </li>
-
-          <li className="text-base hover:text-primaryFont">
-            <Link to="/dashboard/add-employee" className="hover:bg-transparent focus:bg-transparent focus:text-primaryFont">
-              <p className="text-lg leading-10">Add Employee</p>
-            </Link>
-          </li>
         </ul>
       </div>
 
